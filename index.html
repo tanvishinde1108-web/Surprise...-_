@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A Surprise For You ❤️</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Floating Background Hearts */
+    #bg-effects {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .heart-bg {
+      position: absolute;
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 22px;
+      animation: floatUp 6s linear infinite;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(100vh) scale(0.5);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-10vh) scale(1.2);
+        opacity: 0;
+      }
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 35px 25px;
+      border-radius: 20px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+      width: 100%;
+      max-width: 480px;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .step {
+      display: none;
+      animation: fadeIn 0.5s ease-in-out forwards;
+    }
+
+    .step.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h1, h2 {
+      color: #ff4b2b;
+      margin-bottom: 15px;
+    }
+
+    p {
+      color: #555;
+      font-size: 1.1rem;
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    button {
+      background: linear-gradient(to right, #ff416c, #ff4b2b);
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      margin: 5px;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 5px 15px rgba(255, 75, 43, 0.4);
+    }
+
+    .btn-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .meter-bar {
+      width: 100%;
+      height: 25px;
+      background: #eee;
+      border-radius: 15px;
+      overflow: hidden;
+      margin: 20px 0 10px;
+    }
+
+    #meter-fill {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(to right, #ff416c, #ff4b2b);
+      transition: width 0.1s linear;
+    }
+
+    #meter-percent {
+      font-weight: bold;
+      color: #ff4b2b;
+    }
+
+    #gift-box {
+      font-size: 80px;
+      cursor: pointer;
+      user-select: none;
+      animation: bounce 1.5s infinite;
+      margin: 20px 0;
+    }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+      40% { transform: translateY(-20px); }
+      60% { transform: translateY(-10px); }
+    }
+
+    /* Reason Box styling */
+    .reason-box {
+      background: #fff0f3;
+      border: 2px dashed #ff416c;
+      padding: 25px;
+      border-radius: 15px;
+      min-height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.15rem;
+      color: #ff4b2b;
+      font-weight: 600;
+      margin-bottom: 20px;
+      box-shadow: inset 0 0 10px rgba(255, 65, 108, 0.05);
+    }
+
+    /* Love Letter Styles */
+    .letter-box {
+      background: #fffaf0;
+      padding: 25px;
+      border-radius: 15px;
+      border: 2px dashed #ff9a9e;
+      text-align: left;
+      font-style: italic;
+      color: #444;
+      line-height: 1.8;
+      margin-bottom: 20px;
+      max-height: 280px;
+      overflow-y: auto;
+    }
+
+    /* Proposal Styles */
+    .proposal-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 25px;
+      position: relative;
+      min-height: 60px;
+    }
+
+    #no-btn {
+      position: absolute;
+      transition: all 0.2s ease;
+    }
+
+    .celebration {
+      font-size: 1.2rem;
+      color: #ff4b2b;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Background Hearts -->
+  <div id="bg-effects"></div>
+
+  <div class="card">
+    
+    <!-- Step 0: Welcome -->
+    <div id="step-0" class="step active">
+      <h1>❤️ A Surprise For You ❤️</h1>
+      <p>I built a small journey just for you! Are you ready?</p>
+      <button onclick="startExperience()">Start ✨</button>
+    </div>
+
+    <!-- Step 1: Starting Quiz -->
+    <div id="step-1" class="step">
+      <h2>Starting Quiz 🧩</h2>
+      <p id="quiz-question">Loading question...</p>
+      <div id="quiz-options" class="btn-container"></div>
+    </div>
+
+    <!-- Step 2: Love Meter -->
+    <div id="step-2" class="step">
+      <h2>Love Meter ⚡</h2>
+      <p>Analyzing love energy compatibility...</p>
+      <div class="meter-bar">
+        <div id="meter-fill"></div>
+      </div>
+      <p id="meter-percent">0%</p>
+      <button id="meter-btn" style="display: none;" onclick="nextStep()">Continue ❤️</button>
+    </div>
+
+    <!-- Step 3: Unlock Gift -->
+    <div id="step-3" class="step">
+      <h2>You've Unlocked a Gift! 🎁</h2>
+      <p>Tap the gift box to open your surprise:</p>
+      <div id="gift-box" onclick="openGift()">🎁</div>
+    </div>
+
+    <!-- Step 4: Reasons One By One -->
+    <div id="step-4" class="step">
+      <h2>10 Reasons Why I Love You 💕</h2>
+      <p id="reason-counter">Reason 1 of 10</p>
+      <div class="reason-box" id="reason-text">
+        Loading reason...
+      </div>
+      <button id="next-reason-btn" onclick="showNextReason()">Next Reason ✨</button>
+    </div>
+
+    <!-- Step 5: Love Letter -->
+    <div id="step-5" class="step">
+      <h2>💌 My Letter To You</h2>
+      <div class="letter-box">
+        <p><strong>My Dearest,</strong></p>
+        <p>From the moment you came into my life, everything became brighter, sweeter, and infinitely more meaningful. You have this magical way of making me smile without even trying, and every moment shared with you is a memory I cherish dearly.</p>
+        <p>Thank you for being my favorite person, my comfort, and my happiness. I created this surprise just to remind you how deeply loved and appreciated you truly are.</p>
+        <p>With all my love,<br><em>Forever Yours ❤️</em></p>
+      </div>
+      <button onclick="nextStep()">One Final Question... 💍</button>
+    </div>
+
+    <!-- Step 6: Interactive Proposal -->
+    <div id="step-6" class="step">
+      <h2>❤️ The Question ❤️</h2>
+      <p>Now that you've unlocked everything... I have one important question for you:</p>
+      <h1 style="font-size: 1.8rem; margin: 20px 0;">Will you be mine forever? 💍✨</h1>
+      
+      <div class="proposal-buttons">
+        <button id="yes-btn" onclick="acceptProposal()">YES! 💖</button>
+        <button id="no-btn" onmouseover="moveNoButton()" onclick="moveNoButton()">No 😜</button>
+      </div>
+    </div>
+
+    <!-- Step 7: Final Celebration -->
+    <div id="step-7" class="step">
+      <h1>🎉 YAYYY! 🎉</h1>
+      <div style="background: #fff0f3; padding: 20px; border-radius: 12px; border: 1px dashed #ff416c; margin-bottom: 20px;">
+        <p class="celebration">You just made me the happiest person ever! ❤️😍</p>
+        <p style="margin-bottom: 0;">I love you to the moon and back! 💖✨</p>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    let currentStep = 0;
+    let currentQuizIndex = 0;
+    let currentReasonIndex = 0;
+
+    // Quiz Questions
+    const quizData = [
+      {
+        question: "1. What is the best part of my day?",
+        options: ["Sleeping", "Talking to you 💕", "Eating snacks", "Watching reels"],
+        correct: 1
+      },
+      {
+        question: "2. Who is the cutest person reading this right now?",
+        options: ["You 🥰", "Definitely You 😍", "Without a doubt, You!", "All of the above! ❤️"],
+        correct: 3
+      },
+      {
+        question: "3. What should we do on our next hangout?",
+        options: ["Long drive & Coffee ☕", "Movie night 🍿", "Delicious Food Date 🍕", "All of these together! ✨"],
+        correct: 3
+      }
+    ];
+
+    // 10 Reasons Why I Love You
+    const reasons = [
+      "1. The way your smile instantly brightens up my day.",
+      "2. How safe and comfortable I feel whenever I talk to you.",
+      "3. Your kind heart and how deeply you care for me.",
+      "4. Your sense of humor and all of our inside jokes.",
+      "5. The way you listen to me and always make me feel heard.",
+      "6. How adorable you look when you're focused or excited.",
+      "7. Your endless support in everything I do.",
+      "8. Because simply being with you feels like home.",
+      "9. How you make even the smallest moments feel special.",
+      "10. Just because you are YOU, and I wouldn't change a thing! ❤️"
+    ];
+
+    // Background Floating Hearts
+    function createBackgroundHearts() {
+      const container = document.getElementById('bg-effects');
+      for (let i = 0; i < 15; i++) {
+        const heart = document.createElement('div');
+        heart.classList.add('heart-bg');
+        heart.innerText = '❤️';
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
+        heart.style.animationDelay = Math.random() * 5 + 's';
+        container.appendChild(heart);
+      }
+    }
+
+    function showStep(stepIndex) {
+      document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
+      document.getElementById(`step-${stepIndex}`).classList.add('active');
+    }
+
+    function startExperience() {
+      nextStep();
+    }
+
+    function nextStep() {
+      currentStep++;
+      showStep(currentStep);
+
+      if (currentStep === 1) {
+        loadQuizQuestion();
+      } else if (currentStep === 2) {
+        runLoveMeter();
+      } else if (currentStep === 4) {
+        displayReason();
+      }
+    }
+
+    function loadQuizQuestion() {
+      const q = quizData[currentQuizIndex];
+      document.getElementById('quiz-question').innerText = q.question;
+      const optionsContainer = document.getElementById('quiz-options');
+      optionsContainer.innerHTML = '';
+
+      q.options.forEach((opt, index) => {
+        const btn = document.createElement('button');
+        btn.innerText = opt;
+        btn.onclick = () => answerQuiz(index);
+        optionsContainer.appendChild(btn);
+      });
+    }
+
+    function answerQuiz(selectedIndex) {
+      currentQuizIndex++;
+      if (currentQuizIndex < quizData.length) {
+        loadQuizQuestion();
+      } else {
+        nextStep(); // Advance to Love Meter
+      }
+    }
+
+    function runLoveMeter() {
+      let percent = 0;
+      const fill = document.getElementById('meter-fill');
+      const text = document.getElementById('meter-percent');
+      
+      const interval = setInterval(() => {
+        percent += 2;
+        fill.style.width = percent + '%';
+        text.innerText = percent + '%';
+
+        if (percent >= 100) {
+          clearInterval(interval);
+          text.innerText = "1000% (Infinite Love Off The Charts!) 🔥❤️";
+          document.getElementById('meter-btn').style.display = 'inline-block';
+        }
+      }, 40);
+    }
+
+    function openGift() {
+      document.getElementById('gift-box').innerText = '💖';
+      setTimeout(() => {
+        nextStep(); // Advance to Reasons One by One
+      }, 600);
+    }
+
+    function displayReason() {
+      document.getElementById('reason-counter').innerText = `Reason ${currentReasonIndex + 1} of 10`;
+      document.getElementById('reason-text').innerText = reasons[currentReasonIndex];
+      
+      if (currentReasonIndex === reasons.length - 1) {
+        document.getElementById('next-reason-btn').innerText = "Read My Letter 💌";
+      } else {
+        document.getElementById('next-reason-btn').innerText = "Next Reason ✨";
+      }
+    }
+
+    function showNextReason() {
+      if (currentReasonIndex < reasons.length - 1) {
+        currentReasonIndex++;
+        displayReason();
+      } else {
+        nextStep(); // Move to Love Letter step
+      }
+    }
+
+    // Runaway "No" Button
+    function moveNoButton() {
+      const btn = document.getElementById('no-btn');
+      const x = Math.random() * (window.innerWidth - 120) - (window.innerWidth / 2) + 60;
+      const y = Math.random() * (window.innerHeight - 120) - (window.innerHeight / 2) + 60;
+      btn.style.transform = `translate(${x}px, ${y}px)`;
+    }
+
+    function acceptProposal() {
+      showStep(7);
+    }
+
+    // Initialize floating hearts when page loads
+    window.onload = createBackgroundHearts;
+  </script>
+</body>
+</html>
